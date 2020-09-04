@@ -1,7 +1,7 @@
 keras==2.3.1
 tensorflow==1.15.2
-pandas==0.24.2
-numpy==1.16.1
+pandas
+numpy # use colab default
 tqdm==4.24.0
 docopt==0.6.2
 coloredlogs==10.0
