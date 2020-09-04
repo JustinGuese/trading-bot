@@ -47,6 +47,12 @@ def main(train_stock, val_stock, window_size, batch_size, ep_count,
 
     Args: [python train.py --help]
     """
+    import tensorflow as tf
+    print("#TF Version: ",tf.__version__)
+
+    from tensorflow.python.client import device_lib
+    print("Using device: ")
+    print(device_lib.list_local_devices())
     agent = Agent(window_size, strategy=strategy, pretrained=pretrained, model_name=model_name)
     
     train_data = get_stock_data(train_stock)

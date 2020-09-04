@@ -1,5 +1,5 @@
 keras==2.3.1
-tensorflow==1.15.2
+#tensorflow==1.15.2
 pandas
 numpy # use colab default
 tqdm==4.24.0
