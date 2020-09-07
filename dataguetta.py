@@ -1,24 +1,34 @@
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import sys
 
-STOCK = "GOOG"
-data = yf.download("GOOG",period="max",interval="1d")
+if len(sys.argv) <= 1:
+    exit("Too less arguments calling script")
+elif len(sys.argv) != 3:
+    exit("usage: dataguetta.py STOCK interval (see yfinance)")
 
-msk = np.random.rand(len(data)) < 0.9 # 90 10% split
-train = data[msk]
-tmp = data[~msk]
-msk = np.random.rand(len(tmp)) < 0.5 # 50 50 test val split
-test = tmp[msk]
-val = tmp[~msk]
+STOCK = sys.argv[1]
+INT = sys.argv[2]
+period = "max"
+if "h" in INT:
+    period = "720d"
+elif "5m" in INT:
+    period = "60d"
+elif "1m" in INT:
+    period = "7d"
+data = yf.download(STOCK,period=period,interval=INT)
+
+a = int(len(data) * 0.9)
+train = data[:a]
+test = data[a:]
 
 #i need
 # Date,Open,High,Low,Close,Adj Close,Volume
 # 2010-08-12,17.799999,17.900000,17.389999,17.600000,17.600000,691000
 
-train.to_csv("data/%s_train.csv"%STOCK)
-test.to_csv("data/%s_test.csv"%STOCK)
-val.to_csv("data/%s_validation.csv"%STOCK)
+train.to_csv("data/%s_%s_train.csv"%(STOCK,INT))
+test.to_csv("data/%s_%s_test.csv"%(STOCK,INT))
 
 print(train.head())
 print(train.shape,data.shape)

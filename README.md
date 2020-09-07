@@ -44,20 +44,24 @@ You can download Historical Financial data from [Yahoo! Finance](https://ca.fina
 In order to use this project, you'll need to install the required python packages:
 
 ```bash
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 Now you can open up a terminal and start training the agent:
 
 ```bash
-python3 train.py data/GOOG.csv data/GOOG_2018.csv --strategy t-dqn
+python train.py data/DAX_1h_train.csv data/DAX_1h_train.csv --strategy t-dqn --model-name="DAX1h"
 ```
+REMEMBER changing the name according to the data used! otherwise it will overwrite
 
 Once you're done training, run the evaluation script and let the agent make trading decisions:
 
 ```bash
-python3 eval.py data/GOOG_2019.csv --model-name model_GOOG_50 --debug
+python eval.py data/GOOG_2019.csv --model-name model_GOOG_50 --debug
 ```
+
+predict:
+python eval.py data/GOOG_1d_validation.csv --model-name model_GOOG_50
 
 Now you are all set up!
 
