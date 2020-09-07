@@ -46,19 +46,20 @@ def get_stock_data(stock_file):
     """
     df = pd.read_csv(stock_file)
     df = df[df.columns[1:]] # drop date
-    filename = 'scalers/%s.scaler'%stock_file.split("data/")[1]
+    filename = 'scalers/%s.scaler.gz'%stock_file.split("data/")[1]
     if "train" in stock_file:
         scaler = MinMaxScaler()
         dfscaled = scaler.fit_transform(df)
         dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
+        # write scaler to file for later
+        joblib.dump(scaler,filename)
     elif "test" in stock_file:
-        scaler = joblib.load(filename)
+        newname = filename.replace("test","train")
+        scaler = joblib.load(newname)
         dfscaled = scaler.transform(df)
         dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
 
-    # write scaler to file for later
     
-    joblib.dump(scaler,filename)
     return dfscaled
 
 def get_live_stock_data(stockname,interval):
