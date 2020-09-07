@@ -54,7 +54,7 @@ def get_live_stock_data(stockname,interval):
     elif "5m" in interval:
         period = "10m"
     elif "1m" in interval:
-        period = "2m"
+        period = "5m"
     df = yf.download(stockname,period=period,interval=interval)
     df = df[df.columns[1:]] # drop date
     print(df.shape)

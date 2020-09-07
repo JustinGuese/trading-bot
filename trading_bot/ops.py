@@ -20,6 +20,8 @@ def get_state(datan, t, n_days):
     """Returns an n-day state representation ending at time t
     """
     data = list(datan["Adj Close"])
+    if len(data) == 0:
+        raise Exception("DATA IS ZERO!!! CHECK YFINANCE OUTPUT")
     d = t - n_days + 1
     block = data[d: t + 1] if d >= 0 else -d * [data[0]] + data[0: t + 1]  # pad with t0
     res = []

@@ -2,11 +2,12 @@
 Script for evaluating Stock Trading Bot.
 
 Usage:
-  eval.py <eval-stock> [--model-name=<model-name>] [--period=<model-name>]
+  eval.py <eval-stock> [--model-name=<model-name>] [--period=<model-name>] [--money=<money>]
 
 Options:
   --model-name=<model-name>     Name of the pretrained model to use (will eval all models in `models/` if unspecified).
-  --period=<period>             Fuck.
+  --period=<period>             timeframe according to model minute, hour, day, ...
+  --money=<money>               How much to invest
 """
 
 import os
@@ -30,7 +31,7 @@ from trading_bot.utils import (
 )
 
 
-def main(eval_stock, model_name, period):
+def main(eval_stock, model_name, period,money):
     """ Evaluates the stock trading bot.
     Please see https://arxiv.org/abs/1312.5602 for more details.
 
@@ -41,9 +42,14 @@ def main(eval_stock, model_name, period):
     print(pos)
     # todo get current portfolio
     run = True
-    while True:
+    boughtAT = 0
+    prof = 0
+    while run:
         try:
-            data = get_live_stock_data(eval_stock,period)
+            prof = 0
+            if "EUR" in eval_stock: # if forex
+                yfname = eval_stock + "=X"
+            data = get_live_stock_data(yfname,period)
             window_size = 10
             # Single Model Evaluation
             if model_name is not None:
@@ -58,20 +64,27 @@ def main(eval_stock, model_name, period):
             crntPrice = data["Close"][-1]
             resp = None
             eh.updateHandler()
-            print(eh.getWatchlist())
-            debug = True
-            if act == 1 or debug: # buy
-                resp = eh.buy(eval_stock.lower(),10000,1,crntPrice*1.2,crntPrice*0.9)
-                print(resp)
-            elif act == 2: # sell
-                if eval_stock in pos:
-                    print("SELLINGGGG")
+            if act == 1: # buy
+                if eval_stock.lower() not in pos:
+                    resp = eh.buy(eval_stock.lower(),money,1,crntPrice*1.2,crntPrice*0.9)
+                    print(resp)
+                    boughtAT = crntPrice
                 else:
-                    print("FUGGGGGG",pos)
+                    resp= " buy, but have position, so stay"
+            elif act == 2: # sell
+                if eval_stock.lower() in pos:
+                    prof = boughtAT - crntPrice
+                    print("SELLINGGGG ",eval_stock," profit: ",prof)
+                    boughtAT = 0
+                    resp = eh.close(eval_stock.lower())
+                else:
+                    print("not selling bc position not thjere ",eval_stock)
+                    resp = "not selling bc i have no positions in ",eval_stock
+
             else:
                 print("HOLD")
-            with open('%s_log.txt'%eval_stock,'a') as f:
-                txt = "%s %s %s %s"%(eval_stock,act,resp, datetime.datetime.now())
+            with open('logs/%s_log.txt'%eval_stock,'a') as f:
+                txt = "stock:%s, action:%s, profit:%.2f , api-response:%s, time:%s\n"%(eval_stock,act,prof,resp, datetime.datetime.now())
                 f.write(txt)
             time.sleep(57)
 
@@ -90,11 +103,12 @@ if __name__ == "__main__":
     eval_stock = args["<eval-stock>"]
     model_name = args["--model-name"]
     period = args["--period"]
+    money = int(args["--money"])
 
     coloredlogs.install()
     switch_k_backend_device()
 
     try:
-        main(eval_stock, model_name, period)
+        main(eval_stock, model_name, period,money)
     except KeyboardInterrupt:
         print("Aborted")

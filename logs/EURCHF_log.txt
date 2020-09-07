@@ -1,0 +1,13 @@
+stock:EURCHF, action:1, api-response: buy, but have position, so stay, time:2020-09-07 17:41:26.566079
+stock:EURCHF, action:0, api-response:None, time:2020-09-07 17:42:25.133509
+stock:EURCHF, action:0, api-response:None, time:2020-09-07 17:43:24.023631
+stock:EURCHF, action:2, api-response:None, time:2020-09-07 17:44:23.308624
+stock:EURCHF, action:0, api-response:None, time:2020-09-07 17:45:23.035322
+stock:EURCHF, action:2, api-response:None, time:2020-09-07 17:46:23.317816
+stock:EURCHF, action:2, api-response:None, time:2020-09-07 17:47:24.012518
+stock:EURCHF, action:1, api-response: buy, but have position, so stay, time:2020-09-07 17:48:25.311354
+stock:EURCHF, action:0, api-response:None, time:2020-09-07 17:49:27.396435
+stock:EURCHF, action:0, api-response:None, time:2020-09-07 17:50:08.153084
+stock:EURCHF, action:2, api-response:<Response [200]>, time:2020-09-07 17:51:07.167661
+stock:EURCHF, action:1, profit:0.00 , api-response: buy, but have position, so stay, time:2020-09-07 17:57:04.521582
+stock:EURCHF, action:0, profit:0.00 , api-response:None, time:2020-09-07 17:57:27.888090
