@@ -9,6 +9,9 @@ import keras.backend as K
 
 import yfinance as yf
 
+from sklearn.preprocessing import MinMaxScaler
+import joblib
+
 
 # Formats Position
 format_position = lambda price: ('-$' if price < 0 else '+$') + '{0:.2f}'.format(abs(price))
@@ -43,7 +46,20 @@ def get_stock_data(stock_file):
     """
     df = pd.read_csv(stock_file)
     df = df[df.columns[1:]] # drop date
-    return df
+    filename = 'scalers/%s.scaler'%stock_file.split("data/")[1]
+    if "train" in stock_file:
+        scaler = MinMaxScaler()
+        dfscaled = scaler.fit_transform(df)
+        dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
+    elif "test" in stock_file:
+        scaler = joblib.load(filename)
+        dfscaled = scaler.transform(df)
+        dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
+
+    # write scaler to file for later
+    
+    joblib.dump(scaler,filename)
+    return dfscaled
 
 def get_live_stock_data(stockname,interval):
     """Reads stock data from csv file
@@ -57,8 +73,18 @@ def get_live_stock_data(stockname,interval):
         period = "5m"
     df = yf.download(stockname,period=period,interval=interval)
     df = df[df.columns[1:]] # drop date
-    print(df.shape)
-    return df
+    name = None
+    if "EUR" in stockname:
+        name = stockname + "=X_"+interval + "_train.csv.scaler"
+    else:
+        name = stockname + "_"+interval + "_train.csv.scaler"
+    filename = 'scalers/%s.scaler' % name
+    scaler = joblib.load(filename)
+    dfscaled = scaler.transform(df)
+    dfscaled["realprice"] = df["Close"]
+    dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
+    print(dfscaled.shape)
+    return dfscaled
 
 def switch_k_backend_device():
     """ Switches `keras` backend from GPU to CPU if required.

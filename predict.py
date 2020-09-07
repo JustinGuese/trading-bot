@@ -61,7 +61,7 @@ def main(eval_stock, model_name, period,money):
             else:
                 print("MODEL NAME MISSISNg")
             # act on decision
-            crntPrice = data["Close"][-1]
+            crntPrice = data["realprice"][-1]
             resp = None
             eh.updateHandler()
             if act == 1: # buy
