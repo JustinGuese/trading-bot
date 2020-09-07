@@ -32,12 +32,12 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
 
         # BUY
         if action == 1:
-            agent.inventory.append(data[t])
+            agent.inventory.append(data["Adj Close"][t])
 
         # SELL
         elif action == 2 and len(agent.inventory) > 0:
             bought_price = agent.inventory.pop(0)
-            delta = data[t] - bought_price
+            delta = data["Adj Close"][t] - bought_price
             reward = delta #max(delta, 0)
             total_profit += delta
 
@@ -90,28 +90,28 @@ def evaluate_model(agent, data, window_size, debug):
         # BUY
         dec = None
         if action == 1:
-            agent.inventory.append(data[t])
+            agent.inventory.append(data["Adj Close"][t])
 
-            history.append((data[t], "BUY"))
+            history.append((data["Adj Close"][t], "BUY"))
             dec = "BUY"
             if debug:
-                logging.debug("Buy at: {}".format(format_currency(data[t])))
+                logging.debug("Buy at: {}".format(format_currency(data["Adj Close"][t])))
         
         # SELL
         elif action == 2 and len(agent.inventory) > 0:
             bought_price = agent.inventory.pop(0)
-            delta = data[t] - bought_price
+            delta = data["Adj Close"][t] - bought_price
             reward = delta #max(delta, 0)
             total_profit += delta
 
-            history.append((data[t], "SELL"))
+            history.append((data["Adj Close"][t], "SELL"))
             dec = "SELL"
             if debug:
                 logging.debug("Sell at: {} | Position: {}".format(
-                    format_currency(data[t]), format_position(data[t] - bought_price)))
+                    format_currency(data["Adj Close"][t]), format_position(data["Adj Close"][t] - bought_price)))
         # HOLD
         else:
-            history.append((data[t], "HOLD"))
+            history.append((data["Adj Close"][t], "HOLD"))
             dec = "HOLD"
 
         done = (t == data_length - 1)
@@ -119,5 +119,5 @@ def evaluate_model(agent, data, window_size, debug):
 
         state = next_state
         if done:
-            print("Final decision: ",dec, " at ",format_currency(data[t]))
+            print("Final decision: ",dec, " at ",format_currency(data["Adj Close"][t]))
             return total_profit, history

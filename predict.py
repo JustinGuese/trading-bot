@@ -2,12 +2,11 @@
 Script for evaluating Stock Trading Bot.
 
 Usage:
-  eval.py <eval-stock> [--window-size=<window-size>] [--model-name=<model-name>] [--debug]
+  eval.py <eval-stock> [--model-name=<model-name>] [--period=<model-name>]
 
 Options:
-  --window-size=<window-size>   Size of the n-day window stock data representation used as the feature vector. [default: 10]
   --model-name=<model-name>     Name of the pretrained model to use (will eval all models in `models/` if unspecified).
-  --debug                       Specifies whether to use verbose logs during eval operation.
+  --period=<period>             Fuck.
 """
 
 import os
@@ -16,9 +15,10 @@ import coloredlogs
 from docopt import docopt
 
 from trading_bot.agent import Agent
-from trading_bot.methods import predict_next
+from trading_bot.methods import evaluate_model
 from trading_bot.utils import (
     get_stock_data,
+    get_live_stock_data,
     format_currency,
     format_position,
     show_eval_result,
@@ -26,43 +26,37 @@ from trading_bot.utils import (
 )
 
 
-def main(eval_stock, window_size, model_name, debug):
+def main(eval_stock, model_name, period):
     """ Evaluates the stock trading bot.
     Please see https://arxiv.org/abs/1312.5602 for more details.
 
     Args: [python eval.py --help]
     """    
-    data = get_stock_data(eval_stock)
-
+    data = get_live_stock_data(eval_stock,period)
+    window_size = 10
     # Single Model Evaluation
     if model_name is not None:
         print("Modelname: ",model_name)
         agent = Agent(window_size, pretrained=True, model_name=model_name)
-        predict_next(agent, data, window_size )
+        profit, _ = evaluate_model(agent, data, window_size, True)
         # show_eval_result(model_name, profit, initial_offset)
         
     # Multiple Model Evaluation
     else:
-        for model in os.listdir("models"):
-            if os.path.isfile(os.path.join("models", model)):
-                print("Modelname: ",model_name)
-                agent = Agent(window_size, pretrained=True, model_name=model)
-                predict_next(agent, data, window_size)
-                # show_eval_result(model, profit, initial_offset)
-                del agent
+        print("MODEL NAME MISSISNg")
 
 
 if __name__ == "__main__":
     args = docopt(__doc__)
 
     eval_stock = args["<eval-stock>"]
-    window_size = int(args["--window-size"])
     model_name = args["--model-name"]
+    period = args["--period"]
 
     coloredlogs.install(level="DEBUG")
     switch_k_backend_device()
 
     try:
-        main(eval_stock, window_size, model_name, debug)
+        main(eval_stock, model_name, period)
     except KeyboardInterrupt:
         print("Aborted")

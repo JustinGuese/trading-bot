@@ -7,6 +7,8 @@ import numpy as np
 
 import keras.backend as K
 
+import yfinance as yf
+
 
 # Formats Position
 format_position = lambda price: ('-$' if price < 0 else '+$') + '{0:.2f}'.format(abs(price))
@@ -40,14 +42,30 @@ def get_stock_data(stock_file):
     """Reads stock data from csv file
     """
     df = pd.read_csv(stock_file)
-    return list(df['Adj Close'])
+    df = df[df.columns[1:]] # drop date
+    return df
 
+def get_live_stock_data(stockname,interval):
+    """Reads stock data from csv file
+    """
+    period = "max"
+    if "h" in interval:
+        period = "2h"
+    elif "5m" in interval:
+        period = "10m"
+    elif "1m" in interval:
+        period = "2m"
+    df = yf.download(stockname,period=period,interval=interval)
+    df = df[df.columns[1:]] # drop date
+    print(df.shape)
+    return df
 
 def switch_k_backend_device():
     """ Switches `keras` backend from GPU to CPU if required.
 
     Faster computation on CPU (if using tensorflow-gpu).
     """
+    # is really faster.
     if K.backend() == "tensorflow":
         logging.debug("switching to TensorFlow for CPU")
         os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
