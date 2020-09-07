@@ -61,7 +61,7 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
 
 
 def predict_next(agent,data,window_size):
-    state = get_state(data, len(data)+1, window_size + 1)
+    state = get_state(data, len(data)-1, window_size + 1)
     # select an action
     action = agent.act(state)
     if action == 1:
@@ -70,6 +70,7 @@ def predict_next(agent,data,window_size):
         print("SELL! (if you bought a stock")
     else:
         print("HOLD.")
+    return action
 
 def evaluate_model(agent, data, window_size, debug):
     total_profit = 0
