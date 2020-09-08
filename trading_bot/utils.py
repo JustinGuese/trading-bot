@@ -71,7 +71,7 @@ def get_stock_data(stock_file):
 def get_live_stock_data(stockname,interval):
     """Reads stock data from csv file
     """
-    period = "max"
+    period = "2d"
     if "h" in interval:
         period = "2h"
     elif "5m" in interval:
@@ -82,14 +82,15 @@ def get_live_stock_data(stockname,interval):
     df = df[df.columns[1:]] # drop date
     name = None
     if "EUR" in stockname:
-        name = stockname + "=X_"+interval + "_train.csv.scaler"
+        name = stockname + "=X_"+interval + "_train.csv.scaler.gz"
     else:
-        name = stockname + "_"+interval + "_train.csv.scaler"
-    filename = 'scalers/%s.scaler' % name
+        name = stockname + "_"+interval + "_train.csv.scaler.gz"
+    filename = 'scalers/%s' % name
     scaler = joblib.load(filename)
     dfscaled = scaler.transform(df)
-    dfscaled["realprice"] = df["Close"]
+    
     dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
+    dfscaled["realprice"] = df["Close"].values
     print(dfscaled.shape)
     return dfscaled
 

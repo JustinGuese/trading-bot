@@ -8,11 +8,12 @@ python train.py data/TRAINDATA data/TESTDATA --model-name STOCKPERIOD(QQQ1h)
 ## live trading with etoro
 
 1. run etoro server: https://github.com/JustinGuese/etoro-api
-2. > python predict.py STOCK(GOOG) --model-name STOCKPERIOD(GOOG1m_50) --period 1m --money 1000(how much to invest)
+2. > python predict.py GOOG --model-name GOOG1d_50 --period 1d --money 1000 --wait 86400
 match period in model with timeframe
 
-python predict.py EURCHF --model-name EURCHF1m_10 --period 1m --money 1000
+python predict.py GOOG --model-name GOOG1d_50 --period 1d --money 1000 --wait 86400
 
+wait seconds to wait between trades
 --------------
 OLD:
 

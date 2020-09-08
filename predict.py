@@ -2,12 +2,13 @@
 Script for evaluating Stock Trading Bot.
 
 Usage:
-  eval.py <eval-stock> [--model-name=<model-name>] [--period=<model-name>] [--money=<money>]
+  eval.py <eval-stock> [--model-name=<model-name>] [--period=<model-name>] [--money=<money>] [--wait=<wait]
 
 Options:
   --model-name=<model-name>     Name of the pretrained model to use (will eval all models in `models/` if unspecified).
   --period=<period>             timeframe according to model minute, hour, day, ...
   --money=<money>               How much to invest
+  --wait=<wait>                 Seconds to wait between invests 86400 (daily)
 """
 
 import os
@@ -31,7 +32,7 @@ from trading_bot.utils import (
 )
 
 
-def main(eval_stock, model_name, period,money):
+def main(eval_stock, model_name, period,money,waitTime):
     """ Evaluates the stock trading bot.
     Please see https://arxiv.org/abs/1312.5602 for more details.
 
@@ -47,6 +48,7 @@ def main(eval_stock, model_name, period,money):
     while run:
         try:
             prof = 0
+            yfname = eval_stock
             if "EUR" in eval_stock: # if forex
                 yfname = eval_stock + "=X"
             data = get_live_stock_data(yfname,period)
@@ -61,7 +63,7 @@ def main(eval_stock, model_name, period,money):
             else:
                 print("MODEL NAME MISSISNg")
             # act on decision
-            crntPrice = data["realprice"][-1]
+            crntPrice = data["realprice"].values[-1]
             resp = None
             eh.updateHandler()
             if act == 1: # buy
@@ -86,7 +88,7 @@ def main(eval_stock, model_name, period,money):
             with open('logs/%s_log.txt'%eval_stock,'a') as f:
                 txt = "stock:%s, action:%s, profit:%.2f , api-response:%s, time:%s\n"%(eval_stock,act,prof,resp, datetime.datetime.now())
                 f.write(txt)
-            time.sleep(57)
+            time.sleep(waitTime-3)
 
         except KeyboardInterrupt:
             print('Interrupted')
@@ -104,11 +106,12 @@ if __name__ == "__main__":
     model_name = args["--model-name"]
     period = args["--period"]
     money = int(args["--money"])
+    waitTime = int(args["--wait"])
 
     coloredlogs.install()
     switch_k_backend_device()
 
     try:
-        main(eval_stock, model_name, period,money)
+        main(eval_stock, model_name, period,money,waitTime)
     except KeyboardInterrupt:
         print("Aborted")
