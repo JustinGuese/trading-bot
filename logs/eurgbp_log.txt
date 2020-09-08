@@ -26,3 +26,4 @@ stock:EURGBP=X, action:1, profit:0.00 , api-response:{'date': '2020-09-08T20:29:
 stock:EURGBP=X, action:1, profit:0.00 , api-response: buy, but have position, so stay, time:2020-09-08 20:30:55.649548
 stock:EURGBP=X, action:0, profit:0.00 , api-response:None, time:2020-09-08 20:32:04.239228
 stock:EURGBP=X, action:0, profit:0.00 , api-response:None, time:2020-09-08 20:33:19.355310
+stock:EURGBP=X, action:0, profit:0.00 , api-response:None, time:2020-09-08 19:05:36.753532
