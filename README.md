@@ -12,8 +12,13 @@ python train.py data/TRAINDATA data/TESTDATA --model-name STOCKPERIOD(QQQ1h)
 match period in model with timeframe
 
 python predict.py GOOG --model-name GOOG1d_50 --period 1d --money 1000 --wait 86400
+example for minute data
+python predict.py EURUSD=X --model-name eurusd1m_50 --period 1m --money 1000 --wait 60
+-> todo: scaler is weirdly named, needs to be manually changed now
 
 wait seconds to wait between trades
+
+if it says "asset not found" add with addAssets2Etoro script
 --------------
 OLD:
 

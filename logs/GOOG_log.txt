@@ -1,1 +1,4 @@
 stock:GOOG, action:0, profit:0.00 , api-response:None, time:2020-09-08 15:55:30.840205
+stock:GOOG, action:1, profit:0.00 , api-response:{'timestamp': '2020-09-08T13:57:07.343+0000', 'status': 500, 'error': 'Internal Server Error', 'message': 'Asset with id 1002 was not found.', 'path': '/etoro-api/positions/open'}, time:2020-09-08 15:57:07.352034
+stock:GOOG, action:2, profit:0.00 , api-response:('not selling bc i have no positions in ', 'GOOG'), time:2020-09-08 15:58:48.240431
+stock:GOOG, action:2, profit:0.00 , api-response:('not selling bc i have no positions in ', 'GOOG'), time:2020-09-08 15:59:03.452918

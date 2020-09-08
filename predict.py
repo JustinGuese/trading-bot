@@ -50,7 +50,7 @@ def main(eval_stock, model_name, period,money,waitTime):
             prof = 0
             yfname = eval_stock
             if "EUR" in eval_stock: # if forex
-                yfname = eval_stock + "=X"
+                yfname = eval_stock #+ "=X"
             data = get_live_stock_data(yfname,period)
             window_size = 10
             # Single Model Evaluation
@@ -66,6 +66,11 @@ def main(eval_stock, model_name, period,money,waitTime):
             crntPrice = data["realprice"].values[-1]
             resp = None
             eh.updateHandler()
+            if "btc" in eval_stock.lower(): # dirty fix for btc
+                eval_stock = "btc"
+            if "eur" in eval_stock.lower(): # wtf
+                eval_stock = eval_stock.split("=X")[0].lower()
+
             if act == 1: # buy
                 if eval_stock.lower() not in pos:
                     resp = eh.buy(eval_stock.lower(),money,1,crntPrice*1.2,crntPrice*0.9)
