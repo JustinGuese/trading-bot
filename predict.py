@@ -47,6 +47,7 @@ def main(eval_stock, model_name, period,money,waitTime):
     prof = 0
     while run:
         try:
+            pos = eh.getPositionDict()
             prof = 0
             yfname = eval_stock
             if "EUR" in eval_stock: # if forex
@@ -61,38 +62,41 @@ def main(eval_stock, model_name, period,money,waitTime):
                 # show_eval_result(model_name, profit, initial_offset)
             # Multiple Model Evaluation
             else:
-                print("MODEL NAME MISSISNg")
+                raise Exception("MODEL NAME MISSISNg")
             # act on decision
             crntPrice = data["realprice"].values[-1]
             resp = None
             eh.updateHandler()
+            tmpstock = eval_stock
             if "btc" in eval_stock.lower(): # dirty fix for btc
-                eval_stock = "btc"
+                tmpstock = "btc"
             if "eur" in eval_stock.lower(): # wtf
-                eval_stock = eval_stock.split("=X")[0].lower()
+                tmpstock = eval_stock.split("=X")[0].lower()
 
             if act == 1: # buy
-                if eval_stock.lower() not in pos:
-                    resp = eh.buy(eval_stock.lower(),money,1,crntPrice*1.2,crntPrice*0.9)
+                if tmpstock.lower() not in pos:
+                    print("Buy bc no position: ",pos,tmpstock.lower())
+                    resp = eh.buy(tmpstock.lower(),money,1,crntPrice*1.2,crntPrice*0.9)
                     print(resp)
                     boughtAT = crntPrice
                 else:
                     resp= " buy, but have position, so stay"
             elif act == 2: # sell
-                if eval_stock.lower() in pos:
+                if tmpstock.lower() in pos:
                     prof = boughtAT - crntPrice
-                    print("SELLINGGGG ",eval_stock," profit: ",prof)
+                    print("SELLINGGGG ",tmpstock," profit: ",prof)
                     boughtAT = 0
-                    resp = eh.close(eval_stock.lower())
+                    resp = eh.close(tmpstock.lower())
                 else:
-                    print("not selling bc position not thjere ",eval_stock)
-                    resp = "not selling bc i have no positions in ",eval_stock
+                    print("not selling bc position not thjere ",tmpstock)
+                    resp = "not selling bc i have no positions in ",tmpstock
 
             else:
                 print("HOLD")
-            with open('logs/%s_log.txt'%eval_stock,'a') as f:
+            with open('logs/%s_log.txt'%tmpstock,'a') as f:
                 txt = "stock:%s, action:%s, profit:%.2f , api-response:%s, time:%s\n"%(eval_stock,act,prof,resp, datetime.datetime.now())
                 f.write(txt)
+            print(waitTime,"s waiting... ")
             time.sleep(waitTime-3)
 
         except KeyboardInterrupt:

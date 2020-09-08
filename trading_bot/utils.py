@@ -52,7 +52,7 @@ def get_stock_data(stock_file):
     # todo cut out weekend (non trading day)
     df = df[df.index.dayofweek < 5]
     df = df[df.columns[1:]] # drop date
-    filename = 'scalers/%s.scaler.gz'%stock_file.split("data/")[1]
+    filename = 'scalers/%s.scaler.gz'%stock_file.split("data/")[1].lower()
     if "train" in stock_file:
         scaler = MinMaxScaler((0,100)) # bigger values = stronger training
         dfscaled = scaler.fit_transform(df)
@@ -82,9 +82,9 @@ def get_live_stock_data(stockname,interval):
     df = df[df.columns[1:]] # drop date
     name = None
     if "EUR" in stockname:
-        name = stockname + "=X_"+interval + "_train.csv.scaler.gz"
+        name = stockname.lower() + "_"+interval + "_train.csv.scaler.gz"
     else:
-        name = stockname + "_"+interval + "_train.csv.scaler.gz"
+        name = stockname.lower() + "_"+interval + "_train.csv.scaler.gz"
     filename = 'scalers/%s' % name
     scaler = joblib.load(filename)
     dfscaled = scaler.transform(df)

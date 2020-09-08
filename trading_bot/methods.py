@@ -69,7 +69,7 @@ def predict_next(agent,data,window_size):
     elif action == 2: 
         print("SELL! (if you bought a stock")
     else:
-        print("HOLD.")
+        print("HOLD")
     return action
 
 def evaluate_model(agent, data, window_size, debug):
