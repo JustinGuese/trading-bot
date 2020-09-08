@@ -80,14 +80,13 @@ def evaluate_model(agent, data, window_size, debug):
     agent.inventory = []
     
     state = get_state(data, 0, window_size + 1)
-
+    print("Data lerngth",data_length)
     for t in range(data_length):        
         reward = 0
         next_state = get_state(data, t + 1, window_size + 1)
         
         # select an action
         action = agent.act(state, is_eval=True)
-
         # BUY
         dec = None
         if action == 1:
