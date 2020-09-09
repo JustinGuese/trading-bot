@@ -39,6 +39,7 @@ def main(eval_stock, model_name, period,money,waitTime):
     Args: [python eval.py --help]
     """    
     eh = etoroHandler()
+    LEVERAGE = 20
     pos = eh.getPositionDict()
     print(pos)
     # todo get current portfolio
@@ -76,7 +77,7 @@ def main(eval_stock, model_name, period,money,waitTime):
             if act == 1: # buy
                 if tmpstock.lower() not in pos:
                     print("Buy bc no position: ",pos,tmpstock.lower())
-                    resp = eh.buy(tmpstock.lower(),money,1,crntPrice*1.2,crntPrice*0.9)
+                    resp = eh.buy(tmpstock.lower(),money,LEVERAGE,crntPrice*1.2,crntPrice*0.9)
                     print(resp)
                     boughtAT = crntPrice
                 else:
