@@ -1,6 +1,7 @@
 #install (new)
 
 conda env create -f environment.yml
+OR: update an existing environment: > conda env update --file environment.yml
 
 ## train
 python train.py data/TRAINDATA data/TESTDATA --model-name STOCKPERIOD(QQQ1h)
