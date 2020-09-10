@@ -1,1 +1,0 @@
-stock:spy, action:2, profit:0.00 , api-response:('not selling bc i have no positions in ', 'spy'), time:2020-09-08 16:00:10.234572

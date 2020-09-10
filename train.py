@@ -63,7 +63,7 @@ def main(train_stock, val_stock, window_size, batch_size, ep_count,
     for episode in range(1, ep_count + 1):
         train_result = train_model(agent, episode, train_data, ep_count=ep_count,
                                    batch_size=batch_size, window_size=window_size)
-        val_result, _ = evaluate_model(agent, val_data, window_size, debug)
+        val_result, _ , actionCollection = evaluate_model(agent, val_data, window_size, debug)
         show_train_result(train_result, val_result, initial_offset)
 
 

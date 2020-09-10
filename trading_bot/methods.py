@@ -23,6 +23,9 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
 
     state = get_state(data, 0, window_size + 1)
 
+    isShort = False
+    hasPosition = False
+
     for t in tqdm(range(data_length), total=data_length, leave=True, desc='Episode {}/{}'.format(episode, ep_count)):        
         reward = 0
         next_state = get_state(data, t + 1, window_size + 1)
@@ -30,20 +33,45 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
         # select an action
         action = agent.act(state)
 
-        # BUY
-        if action == 1:
-            agent.inventory.append(data["Adj Close"][t])
-
-        # SELL
-        elif action == 2 and len(agent.inventory) > 0:
-            bought_price = agent.inventory.pop(0)
-            delta = data["Adj Close"][t] - bought_price
-            reward = delta #max(delta, 0)
-            total_profit += delta
-
-        # HOLD
-        else:
-            pass
+       
+        if not hasPosition:
+            # BUY long position
+            if action == 1:
+                agent.inventory.append(data["Adj Close"][t])
+                isShort = False
+                hasPosition = True
+            # Buy short position
+            elif action == 2:
+                agent.inventory.append(data["Adj Close"][t])
+                isShort = True
+                hasPosition = True
+            # HOLD
+            else:
+                pass
+        else: # if there is an open position
+            # BUY - if it is a short close
+            if action == 1 and isShort:
+                bought_price = agent.inventory.pop(0)
+                delta = -(data["Adj Close"][t] - bought_price)
+                reward = delta #max(delta, 0)
+                total_profit += delta
+                hasPosition = False
+            # buy sig and only long
+            elif action == 1 and not isShort: 
+                pass # dont buy new stocks
+            # Sell signal if we have a long position
+            elif action == 2 and not isShort:
+                bought_price = agent.inventory.pop(0)
+                delta = data["Adj Close"][t] - bought_price
+                reward = delta #max(delta, 0)
+                total_profit += delta
+                hasPosition = False
+            # sell signal and have short
+            elif action == 2 and isShort:
+                pass # do not buy new ones yet
+            # HOLD
+            else:
+                pass
 
         done = (t == data_length - 1)
         agent.remember(state, action, reward, next_state, done)
@@ -80,6 +108,7 @@ def evaluate_model(agent, data, window_size, debug):
     agent.inventory = []
     
     state = get_state(data, 0, window_size + 1)
+    actionCollection = []
     print("Data lerngth",data_length)
     for t in range(data_length):        
         reward = 0
@@ -118,6 +147,7 @@ def evaluate_model(agent, data, window_size, debug):
         agent.memory.append((state, action, reward, next_state, done))
 
         state = next_state
+        actionCollection.append(action)
         if done:
             print("Final decision: ",dec, " at ",format_currency(data["Adj Close"][t]))
-            return total_profit, history
+            return total_profit, history, actionCollection

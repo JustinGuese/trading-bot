@@ -1,1 +1,0 @@
-stock:btc, action:2, profit:0.00 , api-response:('not selling bc i have no positions in ', 'btc'), time:2020-09-08 16:01:37.697577
