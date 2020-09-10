@@ -10,6 +10,7 @@ import keras.backend as K
 import yfinance as yf
 
 from sklearn.preprocessing import MinMaxScaler
+from ta import add_all_ta_features
 import joblib
 
 
@@ -65,19 +66,22 @@ def get_stock_data(stock_file):
         dfscaled = scaler.transform(df)
         dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
 
+    # add ta features
+    dfscaled = add_all_ta_features(dfscaled,open="Open", high="High", low="Low", close="Close", volume="Volume")
+
     
     return dfscaled
 
 def get_live_stock_data(stockname,interval):
     """Reads stock data from csv file
     """
-    period = "2d"
+    period = "20d"
     if "h" in interval:
-        period = "2h"
+        period = "20h"
     elif "5m" in interval:
-        period = "10m"
+        period = "100m"
     elif "1m" in interval:
-        period = "5m"
+        period = "50m"
     df = yf.download(stockname,period=period,interval=interval)
     df = df[df.columns[1:]] # drop date
     name = None
@@ -91,6 +95,9 @@ def get_live_stock_data(stockname,interval):
     
     dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
     dfscaled["realprice"] = df["Close"].values
+    # add ta features
+    dfscaled = add_all_ta_features(dfscaled,open="Open", high="High", low="Low", close="Close", volume="Volume")
+
     print(dfscaled.shape)
     return dfscaled
 
