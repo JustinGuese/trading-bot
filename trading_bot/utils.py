@@ -67,7 +67,7 @@ def get_stock_data(stock_file):
         dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
 
     # add ta features
-    dfscaled = add_all_ta_features(dfscaled,open="Open", high="High", low="Low", close="Close", volume="Volume")
+    # dfscaled = add_all_ta_features(dfscaled,open="Open", high="High", low="Low", close="Close", volume="Volume")
 
     
     return dfscaled
@@ -96,7 +96,7 @@ def get_live_stock_data(stockname,interval):
     dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
     dfscaled["realprice"] = df["Close"].values
     # add ta features
-    dfscaled = add_all_ta_features(dfscaled,open="Open", high="High", low="Low", close="Close", volume="Volume")
+    # dfscaled = add_all_ta_features(dfscaled,open="Open", high="High", low="Low", close="Close", volume="Volume")
 
     print(dfscaled.shape)
     return dfscaled
