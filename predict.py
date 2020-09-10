@@ -46,6 +46,9 @@ def main(eval_stock, model_name, period,money,waitTime):
     run = True
     boughtAT = 0
     prof = 0
+
+    isShort = False
+
     while run:
         try:
             pos = eh.getPositionDict()
@@ -74,21 +77,34 @@ def main(eval_stock, model_name, period,money,waitTime):
             if "eur" in eval_stock.lower(): # wtf
                 tmpstock = eval_stock.split("=X")[0].lower()
 
+            
             if act == 1: # buy
                 if tmpstock.lower() not in pos:
-                    print("Buy bc no position: ",pos,tmpstock.lower())
+                    print("Long Buy bc no position: ",pos,tmpstock.lower())
                     resp = eh.buy(tmpstock.lower(),money,LEVERAGE,crntPrice*1.2,crntPrice*0.9)
                     print(resp)
                     boughtAT = crntPrice
-                else:
-                    resp= " buy, but have position, so stay"
-            elif act == 2: # sell
-                if tmpstock.lower() in pos:
-                    prof = boughtAT - crntPrice
-                    print("SELLINGGGG ",tmpstock," profit: ",prof)
+                    isShort = False
+                elif tmpstock.lower() in pos and isShort:
+                    prof = -(boughtAT - crntPrice)
+                    print("Short SELLINGGGG ",tmpstock," profit: ",prof)
                     boughtAT = 0
                     resp = eh.close(tmpstock.lower())
                 else:
+                    resp= " buy, but have position, so stay"
+            elif act == 2: # sell
+                if tmpstock.lower() in pos and not isShort:
+                    prof = boughtAT - crntPrice
+                    print("Long SELLINGGGG ",tmpstock," profit: ",prof)
+                    boughtAT = 0
+                    resp = eh.close(tmpstock.lower())
+                elif tmpstock.lower() not in pos:
+                    print("Short Buy bc no position: ",pos,tmpstock.lower())
+                    resp = eh.sell(tmpstock.lower(),money,LEVERAGE,crntPrice*.8,crntPrice*1.1)
+                    print(resp)
+                    boughtAT = crntPrice
+                    isShort = True
+                else: # we have a short position
                     print("not selling bc position not thjere ",tmpstock)
                     resp = "not selling bc i have no positions in ",tmpstock
 
@@ -107,6 +123,10 @@ def main(eval_stock, model_name, period,money,waitTime):
                 sys.exit(0)
             except SystemExit:
                 os._exit(0)
+        except Exception:
+            resp = eh.close(tmpstock.lower())
+            print("EERROR: try to close positions before exit")
+            raise 
 
 
 if __name__ == "__main__":

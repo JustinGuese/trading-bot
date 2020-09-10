@@ -27,6 +27,7 @@ test = data[a:]
 # Date,Open,High,Low,Close,Adj Close,Volume
 # 2010-08-12,17.799999,17.900000,17.389999,17.600000,17.600000,691000
 
+data.to_csv("data/%s_%s_all.csv"%(STOCK,INT))
 train.to_csv("data/%s_%s_train.csv"%(STOCK,INT))
 test.to_csv("data/%s_%s_test.csv"%(STOCK,INT))
 
