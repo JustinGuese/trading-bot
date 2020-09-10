@@ -1,0 +1,17 @@
+chardet
+sklearn
+coloredlogs
+docopt
+humanfriendly
+idna
+multitasking
+pandas
+python-dateutil
+pytz
+pyyaml
+requests
+tqdm
+urllib3
+yfinance
+
+
