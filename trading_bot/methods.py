@@ -28,6 +28,7 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
 
     for t in tqdm(range(data_length), total=data_length, leave=True, desc='Episode {}/{}'.format(episode, ep_count)):        
         reward = 0
+        COMMISSIONPCT = 0.01 # the higher the more penalty for small trades
         next_state = get_state(data, t + 1, window_size + 1)
 
         # select an action
@@ -52,9 +53,9 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
             # BUY - if it is a short close
             if action == 1 and isShort:
                 bought_price = agent.inventory.pop(0)
-                delta = -(data["Adj Close"][t] - bought_price)
-                reward = delta #max(delta, 0)
-                total_profit += delta
+                delta = -(data["Adj Close"][t] - bought_price) 
+                reward = delta - (COMMISSIONPCT * data["Adj Close"][t])
+                total_profit += reward
                 hasPosition = False
             # buy sig and only long
             elif action == 1 and not isShort: 
@@ -63,8 +64,8 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
             elif action == 2 and not isShort:
                 bought_price = agent.inventory.pop(0)
                 delta = data["Adj Close"][t] - bought_price
-                reward = delta #max(delta, 0)
-                total_profit += delta
+                reward = delta - (COMMISSIONPCT * data["Adj Close"][t])
+                total_profit += reward
                 hasPosition = False
             # sell signal and have short
             elif action == 2 and isShort:
