@@ -58,7 +58,7 @@ def main(train_stock, val_stock, window_size, batch_size, ep_count,
     train_data = get_stock_data(train_stock)
     val_data = get_stock_data(val_stock)
 
-    initial_offset = val_data["Adj Close"][1] - val_data["Adj Close"][0]
+    initial_offset = val_data["Close"][1] - val_data["Close"][0]
 
     for episode in range(1, ep_count + 1):
         train_result = train_model(agent, episode, train_data, ep_count=ep_count,

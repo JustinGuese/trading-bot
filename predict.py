@@ -124,7 +124,7 @@ def main(eval_stock, model_name, period,money,waitTime):
             except SystemExit:
                 os._exit(0)
         except Exception:
-            resp = eh.close(tmpstock.lower())
+            #resp = eh.close(tmpstock.lower())
             print("EERROR: try to close positions before exit")
             raise 
 

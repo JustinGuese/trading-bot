@@ -6,6 +6,8 @@ OR: update an existing environment: > conda env update --file environment.yml
 ## train
 python train.py data/TRAINDATA data/TESTDATA --model-name STOCKPERIOD(QQQ1h)
 
+# 96.037,94 USD
+
 ## live trading with etoro
 
 1. run etoro server: https://github.com/JustinGuese/etoro-api

@@ -24,7 +24,7 @@ train = data[:a]
 test = data[a:]
 
 #i need
-# Date,Open,High,Low,Close,Adj Close,Volume
+# Date,Open,High,Low,Close,Close,Volume
 # 2010-08-12,17.799999,17.900000,17.389999,17.600000,17.600000,691000
 
 data.to_csv("data/%s_%s_all.csv"%(STOCK,INT))
