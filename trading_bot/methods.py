@@ -28,7 +28,7 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
 
     for t in tqdm(range(data_length), total=data_length, leave=True, desc='Episode {}/{}'.format(episode, ep_count)):        
         reward = 0
-        COMMISSIONPCT = 0.01 # the higher the more penalty for small trades
+        COMMISSIONPCT = 0.00125 # the higher the more penalty for small trades
         next_state = get_state(data, t + 1, window_size + 1)
 
         # select an action
@@ -83,7 +83,7 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
 
         state = next_state
 
-    if episode % 10 == 0:
+    if episode % 2 == 0:
         agent.save(episode)
 
     return (episode, ep_count, total_profit, np.mean(np.array(avg_loss)))

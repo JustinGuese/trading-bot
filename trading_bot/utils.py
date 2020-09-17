@@ -106,7 +106,7 @@ def switch_k_backend_device():
 
     Faster computation on CPU (if using tensorflow-gpu).
     """
-    # is really faster.
+    #is really faster.
     if K.backend() == "tensorflow":
         logging.debug("switching to TensorFlow for CPU")
         os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
