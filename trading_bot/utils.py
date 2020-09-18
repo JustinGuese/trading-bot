@@ -52,8 +52,16 @@ def get_stock_data(stock_file):
         df = pd.read_csv(stock_file,parse_dates=['Date'], index_col=['Date'])
     # todo cut out weekend (non trading day)
     df = df[df.index.dayofweek < 5]
-    df = df[df.columns[1:]] # drop date
+    #df = df[df.columns[1:]] # drop date
     filename = 'scalers/%s.scaler.gz'%stock_file.split("data/")[1].lower()
+
+    def datafix(data):
+        return data[["Open","High","Low","Close"]]
+    if len(df.columns) == 6:
+        df = datafix(df)
+    elif len(df.columns) != 5:
+        raise Exception("Something is not right with data, should be 4 columns")
+
     if "train" in stock_file:
         scaler = MinMaxScaler((0,100)) # bigger values = stronger training
         dfscaled = scaler.fit_transform(df)
@@ -62,6 +70,11 @@ def get_stock_data(stock_file):
         joblib.dump(scaler,filename)
     elif "test" in stock_file:
         newname = filename.replace("test","train")
+        scaler = joblib.load(newname)
+        dfscaled = scaler.transform(df)
+        dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
+    elif "all" in stock_file:
+        newname = filename.replace("all","train")
         scaler = joblib.load(newname)
         dfscaled = scaler.transform(df)
         dfscaled = pd.DataFrame(dfscaled,columns=df.columns)
