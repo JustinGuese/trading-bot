@@ -58,10 +58,11 @@ def get_stock_data(stock_file):
     def datafix(data):
         return data[["Open","High","Low","Close"]]
     if len(df.columns) == 6:
+        
         df = datafix(df)
     elif len(df.columns) != 5:
         raise Exception("Something is not right with data, should be 4 columns")
-
+    print(df.columns)
     if "train" in stock_file:
         scaler = MinMaxScaler((0,100)) # bigger values = stronger training
         dfscaled = scaler.fit_transform(df)
@@ -96,7 +97,15 @@ def get_live_stock_data(stockname,interval):
     elif "1m" in interval:
         period = "50m"
     df = yf.download(stockname,period=period,interval=interval)
-    df = df[df.columns[1:]] # drop date
+    
+    def datafix(data):
+        return data[["Open","High","Low","Close"]]
+    if len(df.columns) == 6:
+        
+        df = datafix(df)
+    elif len(df.columns) != 5:
+        raise Exception("Something is not right with data, should be 4 columns")
+
     name = None
     if "EUR" in stockname:
         name = stockname.lower() + "_"+interval + "_train.csv.scaler.gz"

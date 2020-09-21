@@ -1,0 +1,9 @@
+stock:AAPL, action:1, profit:0.00 , api-response:{'timestamp': '2020-09-18T11:50:15.581+0000', 'status': 500, 'error': 'Internal Server Error', 'message': 'Asset with id 1001 was not found.', 'path': '/etoro-api/positions/open'}, time:2020-09-18 13:50:15.591446
+stock:AAPL, action:2, profit:0.00 , api-response:{'timestamp': '2020-09-18T11:51:04.596+0000', 'status': 500, 'error': 'Internal Server Error', 'message': 'Market null is closed.', 'path': '/etoro-api/positions/open'}, time:2020-09-18 13:51:04.598174
+stock:AAPL, action:2, profit:0.00 , api-response:{'timestamp': '2020-09-18T13:17:42.293+0000', 'status': 500, 'error': 'Internal Server Error', 'message': 'Market null is closed.', 'path': '/etoro-api/positions/open'}, time:2020-09-18 15:17:42.295095
+stock:AAPL, action:0, profit:0.00 , api-response:None, time:2020-09-18 15:18:41.676516
+stock:AAPL, action:2, profit:0.00 , api-response:{'timestamp': '2020-09-18T13:19:48.546+0000', 'status': 500, 'error': 'Internal Server Error', 'message': 'Market null is closed.', 'path': '/etoro-api/positions/open'}, time:2020-09-18 15:19:48.547666
+stock:AAPL, action:0, profit:0.00 , api-response:None, time:2020-09-18 15:20:48.689714
+stock:AAPL, action:2, profit:0.00 , api-response:{'timestamp': '2020-09-18T13:21:49.443+0000', 'status': 500, 'error': 'Internal Server Error', 'message': 'Market null is closed.', 'path': '/etoro-api/positions/open'}, time:2020-09-18 15:21:49.444957
+stock:AAPL, action:0, profit:0.00 , api-response:None, time:2020-09-18 15:22:53.674807
+stock:AAPL, action:1, profit:0.00 , api-response:{'timestamp': '2020-09-18T13:23:55.524+0000', 'status': 500, 'error': 'Internal Server Error', 'message': 'Market null is closed.', 'path': '/etoro-api/positions/open'}, time:2020-09-18 15:23:55.526119
