@@ -42,8 +42,8 @@ time.sleep(5) #sleep to allow enough time for data to be returned
 #Working with Pandas DataFrames
 import pandas
 
-df = pandas.DataFrame(app.data, columns=['DateTime', 'Open',"High","Low","Close"])
-df['DateTime'] = pandas.to_datetime(df['DateTime'],unit='s') 
+df = pandas.DataFrame(app.data, columns=['Datetime', 'Open',"High","Low","Close"])
+df['Datetime'] = pandas.to_datetime(df['Datetime'],unit='s') 
 if len(df) > 0:
     df.to_csv('data/%s=X_1m_all.csv'%name,index=False)  
     split = 0.9
