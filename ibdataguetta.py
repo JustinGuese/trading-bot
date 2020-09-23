@@ -28,10 +28,10 @@ time.sleep(1) #Sleep interval to allow time for connection to server
 
 #Create contract object
 eurusd_contract = Contract()
-eurusd_contract.symbol = 'EUR'
+eurusd_contract.symbol = 'CHF'
 eurusd_contract.secType = 'CASH'
 eurusd_contract.exchange = 'IDEALPRO'
-eurusd_contract.currency = 'USD'
+eurusd_contract.currency = 'EUR'
 name = eurusd_contract.symbol + eurusd_contract.currency
 #Request historical candles
 # maximum 1 min -> 6d
