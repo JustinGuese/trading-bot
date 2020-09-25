@@ -42,8 +42,8 @@ class rebot(bt.Strategy):
 
             pos = self.getposition(d).size
             # start 99.511 eur, 450 usd
-            print("need to fix fucking IB becasue they are retarded fucktards",pos)
-            pos += 944
+            #print("need to fix fucking IB becasue they are retarded fucktards",pos)
+            #pos += 944
 
 
             tmp = []
@@ -66,32 +66,37 @@ class rebot(bt.Strategy):
            
            
             
-            if pos < 0:
-                self.isShort = True
-            elif pos > 0:
-                self.isShort = False
+            # if pos < 0:
+            #     self.isShort = True
+            # elif pos > 0:
+            #     self.isShort = False
 
+            #action = 1
+            # FUCK IB! WHAT THE FUCKKKKK IS JUST GOING ON WITH THESE FUCKTARDS
+            manualsize = 20000
+            pos = -pos
+            print("action: ",action)
             if not pos:  # no market / no orders
                 if action == 1: # buy
-                    self.buy(data=d)
-                    print("buy bc no positions")
-                    #self.isShort = False
+                    res = self.sell(data=d,size=manualsize)
+                    print("buy bc no positions",res)
+                    self.isShort = False
                 elif action == 2 and self.p.allowshorts == 1:
-                    self.sell(data=d)
-                    print("short bc no positions")
-                    #self.isShort = True
+                    res = self.buy(data=d,size=manualsize)
+                    print("short bc no positions",res)
+                    self.isShort = True
                 elif action == 2 and self.p.allowshorts == 0:
                     print("short, but skip bc short deactivated")
                 
             else:
                 if action == 1 and self.isShort and self.p.allowshorts == 1:
                     print("closing short")
-                    self.close(data=d)
+                    self.sell(data=d,size=manualsize)
                     #self.buy(data=d)
                     #self.isShort = False
                 elif action == 2 and not self.isShort:
                     print("long sell")
-                    self.close(data=d)
+                    self.buy(data=d,size=manualsize)
                     #self.sell(data=d)
                     #self.isShort = True
                 elif action == 1 and self.p.allowshorts == 0:
