@@ -41,9 +41,9 @@ class rebot(bt.Strategy):
             # print(dn,self.crosses[d._name][0])
 
             pos = self.getposition(d).size
-            # start 99.511 eur, 450 usd
-            #print("need to fix fucking IB becasue they are retarded fucktards",pos)
-            #pos += 944
+            # start 79972 eur
+            print("need to fix fucking IB becasue they are retarded fucktards",pos)
+            pos += 20000
 
 
             tmp = []

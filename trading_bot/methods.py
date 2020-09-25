@@ -29,6 +29,7 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
     for t in tqdm(range(data_length), total=data_length, leave=True, desc='Episode {}/{}'.format(episode, ep_count)):        
         reward = 0
         COMMISSIONPCT = 0.00125 # the higher the more penalty for small trades
+        IDLEPUNISH = 0.01
         next_state = get_state(data, t + 1, window_size + 1)
 
         # select an action
@@ -41,11 +42,13 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
                 agent.inventory.append(data["Close"][t])
                 isShort = False
                 hasPosition = True
+                reward = IDLEPUNISH # small reward bc action done
             # Buy short position
             elif action == 2:
                 agent.inventory.append(data["Close"][t])
                 isShort = True
                 hasPosition = True
+                reward = IDLEPUNISH # small reward bc action done
             # HOLD
             else:
                 pass
@@ -59,7 +62,8 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
                 hasPosition = False
             # buy sig and only long
             elif action == 1 and not isShort: 
-                pass # dont buy new stocks
+                # dont buy new stocks, but punish action bc should only choose sell then
+                reward = -IDLEPUNISH
             # Sell signal if we have a long position
             elif action == 2 and not isShort:
                 bought_price = agent.inventory.pop(0)
@@ -69,7 +73,8 @@ def train_model(agent, episode, data, ep_count=100, batch_size=32, window_size=1
                 hasPosition = False
             # sell signal and have short
             elif action == 2 and isShort:
-                pass # do not buy new ones yet
+                # dont buy new stocks, but punish action bc should only choose sell then
+                reward = -IDLEPUNISH
             # HOLD
             else:
                 pass

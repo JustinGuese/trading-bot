@@ -33,7 +33,7 @@ class Agent:
 
         # agent config
         self.state_size = state_size    	# normalized previous days
-        self.action_size = 3           		# [sit, buy, sell]
+        self.action_size = 3           		# [sit, buy, sell], 0 hold, 1 buy, 2 sell 
         self.model_name = model_name
         self.inventory = []
         self.memory = deque(maxlen=10000)
