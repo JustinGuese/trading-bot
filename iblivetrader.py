@@ -47,12 +47,14 @@ class rebot(bt.Strategy):
 
 
             tmp = []
-            # if len(d.open) < window_size:
-            #     lookback = len(d.open)
-            # else:
-            #     lookback = window_size
+            if len(d.open) < window_size:
+                lookback = len(d.open)
+            else:
+                lookback = window_size+1 # +1 for safety
             for i in range(1):
                 tmp.append([d.open[-i],d.high[-i],d.low[-i],d.close[-i]])
+            # now need to reverse bc newest is at 0, and last is oldest
+            tmp = tmp[::-1]
             print(d.datetime.datetime(ago=0)," current numbers ",tmp[0])
             print("current positions: ",pos)
                 

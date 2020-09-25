@@ -93,12 +93,12 @@ def predict_next(agent,data,window_size):
     state = get_state(data, len(data)-1, window_size + 1)
     # select an action
     action = agent.act(state)
-    if action == 1:
-        print("BUY!")
-    elif action == 2: 
-        print("SELL! (if you bought a stock")
-    else:
-        print("HOLD")
+    # if action == 1:
+    #     print("BUY!")
+    # elif action == 2: 
+    #     print("SELL! (if you bought a stock")
+    # else:
+    #     print("HOLD")
     return action
 
 def evaluate_model(agent, data, window_size, debug):
@@ -113,6 +113,7 @@ def evaluate_model(agent, data, window_size, debug):
     print("Data lerngth",data_length)
     for t in range(data_length):        
         reward = 0
+        print("eval dta size",data.shape)
         next_state = get_state(data, t + 1, window_size + 1)
         
         # select an action
