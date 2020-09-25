@@ -1,0 +1,14 @@
+stock:EURUSD, action:2, profit:0.00 , api-response:('not selling bc i have no positions in ', 'EURUSD'), time:2020-09-24 08:32:17.662128
+stock:EURUSD, action:0, profit:0.00 , api-response:('not selling bc i have no positions in ', 'EURUSD'), time:2020-09-24 08:33:20.646189
+stock:EURUSD, action:2, profit:0.00 , api-response:('not selling bc i have no positions in ', 'EURUSD'), time:2020-09-24 08:34:23.861042
+stock:EURUSD, action:1, profit:0.00 , api-response:None, time:2020-09-24 08:44:31.900415
+stock:EURUSD, action:1, profit:0.00 , api-response:None, time:2020-09-24 08:44:58.744060
+stock:EURUSD, action:1, profit:0.00 , api-response:None, time:2020-09-24 08:47:22.206162
+stock:EURUSD, action:1, profit:0.00 , api-response:None, time:2020-09-24 08:49:01.335640
+stock:EURUSD, action:1, profit:0.00 , api-response:None, time:2020-09-24 08:50:09.220206
+stock:EURUSD, action:1, profit:0.00 , api-response:None, time:2020-09-24 08:50:29.296700
+stock:EURUSD, action:1, profit:0.00 , api-response:None, time:2020-09-24 09:14:51.413651
+stock:EURUSD, action:1, profit:0.00 , api-response:None, time:2020-09-24 09:16:11.745761
+stock:EURUSD, action:1, profit:0.00 , api-response:None, time:2020-09-24 09:17:20.829387
+stock:EURUSD, action:2, profit:0.00 , api-response:('not selling bc i have no positions in ', 'EURUSD'), time:2020-09-24 09:17:57.792482
+stock:EURUSD, action:2, profit:0.00 , api-response:('not selling bc i have no positions in ', 'EURUSD'), time:2020-09-24 09:20:27.947215

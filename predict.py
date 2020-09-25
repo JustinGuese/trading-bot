@@ -77,7 +77,7 @@ def main(eval_stock, model_name, period,money,waitTime):
             if "eur" in eval_stock.lower(): # wtf
                 tmpstock = eval_stock.split("=X")[0].lower()
 
-            
+            allowShort = False
             if act == 1: # buy
                 if tmpstock.lower() not in pos:
                     print("Long Buy bc no position: ",pos,tmpstock.lower())
@@ -85,7 +85,7 @@ def main(eval_stock, model_name, period,money,waitTime):
                     print(resp)
                     boughtAT = crntPrice
                     isShort = False
-                elif tmpstock.lower() in pos and isShort:
+                elif tmpstock.lower() in pos and isShort and allowShort:
                     prof = -(boughtAT - crntPrice)
                     print("Short SELLINGGGG ",tmpstock," profit: ",prof)
                     boughtAT = 0
@@ -98,7 +98,7 @@ def main(eval_stock, model_name, period,money,waitTime):
                     print("Long SELLINGGGG ",tmpstock," profit: ",prof)
                     boughtAT = 0
                     resp = eh.close(tmpstock.lower())
-                elif tmpstock.lower() not in pos:
+                elif tmpstock.lower() not in pos and allowShort:
                     print("Short Buy bc no position: ",pos,tmpstock.lower())
                     resp = eh.sell(tmpstock.lower(),money,LEVERAGE,crntPrice*.8,crntPrice*1.1)
                     print(resp)
