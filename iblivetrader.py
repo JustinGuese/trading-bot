@@ -24,7 +24,7 @@ agent = Agent(window_size, pretrained=True, model_name=args.modelname)
 class rebot(bt.Strategy):
 
     params = (
-        ('allowshorts',0),
+        ('allowshorts',1),
         ('printLog',False)
     )
 
@@ -41,7 +41,7 @@ class rebot(bt.Strategy):
             # print(dn,self.crosses[d._name][0])
 
             pos = self.getposition(d).size
-            # start 79972 eur
+            # start 79944 eur
             print("need to fix fucking IB becasue they are retarded fucktards",pos)
             pos += 20000
 
@@ -79,12 +79,12 @@ class rebot(bt.Strategy):
             pos = -pos
             print("action: ",action)
             if not pos:  # no market / no orders
-                if action == 1: # buy
-                    res = self.sell(data=d,size=manualsize)
+                if action == 1 and not self.p.allowshorts: # buy
+                    res = self.buy(data=d,size=manualsize)
                     print("buy bc no positions",res)
                     self.isShort = False
                 elif action == 2 and self.p.allowshorts == 1:
-                    res = self.buy(data=d,size=manualsize)
+                    res = self.sell(data=d,size=manualsize)
                     print("short bc no positions",res)
                     self.isShort = True
                 elif action == 2 and self.p.allowshorts == 0:
@@ -93,12 +93,12 @@ class rebot(bt.Strategy):
             else:
                 if action == 1 and self.isShort and self.p.allowshorts == 1:
                     print("closing short")
-                    self.sell(data=d,size=manualsize)
+                    self.buy(data=d,size=manualsize)
                     #self.buy(data=d)
                     #self.isShort = False
                 elif action == 2 and not self.isShort:
                     print("long sell")
-                    self.buy(data=d,size=manualsize)
+                    self.sell(data=d,size=manualsize)
                     #self.sell(data=d)
                     #self.isShort = True
                 elif action == 1 and self.p.allowshorts == 0:
