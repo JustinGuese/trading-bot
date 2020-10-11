@@ -56,12 +56,11 @@ def get_stock_data(stock_file):
     filename = 'scalers/%s.scaler.gz'%stock_file.split("data/")[1].lower()
 
     def datafix(data):
-        return data[["Open","High","Low","Close"]]
-    if len(df.columns) == 5:
-        
+        return data[["Open","High","Low","Close","Volume"]]
+    if len(df.columns) == 6:
         df = datafix(df)
-    elif len(df.columns) != 4:
-        raise Exception("Something is not right with data, should be 4 columns")
+    elif len(df.columns) != 5:
+        raise Exception("Something is not right with data, should be 4 columns",df.columns)
     print(df.columns)
     if "train" in stock_file:
         scaler = MinMaxScaler((0,100)) # bigger values = stronger training
@@ -99,12 +98,12 @@ def get_live_stock_data(stockname,interval):
     df = yf.download(stockname,period=period,interval=interval)
     
     def datafix(data):
-        return data[["Open","High","Low","Close"]]
-    if len(df.columns) == 5:
-        
+        return data[["Open","High","Low","Close","Volume"]]
+    if len(df.columns) == 6:
         df = datafix(df)
-    elif len(df.columns) != 4:
-        raise Exception("Something is not right with data, should be 4 columns")
+    elif len(df.columns) != 5:
+        raise Exception("Something is not right with data, should be 4 columns",df.columns)
+    print(df.columns)
 
     name = None
     if "EUR" in stockname:
@@ -129,6 +128,6 @@ def switch_k_backend_device():
     Faster computation on CPU (if using tensorflow-gpu).
     """
     #is really faster.
-    # if K.backend() == "tensorflow":
-    #     logging.debug("switching to TensorFlow for CPU")
-    #     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+    if K.backend() == "tensorflow":
+        logging.debug("switching to TensorFlow for CPU")
+        os.environ["CUDA_VISIBLE_DEVICES"] = "-1"

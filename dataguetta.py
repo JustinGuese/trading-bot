@@ -4,7 +4,7 @@ import numpy as np
 import sys
 
 if len(sys.argv) <= 1:
-    exit("Too less arguments calling script")
+    exit("Too less arguments calling script usage: dataguetta.py STOCK interval (see yfinance)")
 elif len(sys.argv) != 3:
     exit("usage: dataguetta.py STOCK interval (see yfinance)")
 
