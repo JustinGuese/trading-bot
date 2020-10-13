@@ -4,5 +4,5 @@ git add -A
 git commit -m "training done"
 git push origin master
 # this will need sudo
-sudo shutdown -h now
+shutdown -h now
 
