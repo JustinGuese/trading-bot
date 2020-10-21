@@ -1,0 +1,3 @@
+#!/bin/bash
+# sometimes theres a memory error, use this instead
+pip install --no-cache-dir tensorflow

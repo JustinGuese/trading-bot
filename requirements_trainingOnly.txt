@@ -1,0 +1,9 @@
+coloredlogs
+docopt
+numpy
+keras
+tqdm
+pandas
+yfinance
+sklearn
+ta
